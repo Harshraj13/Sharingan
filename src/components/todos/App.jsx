@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { ListGroup} from "react-bootstrap";
 
 import {
@@ -11,6 +11,9 @@ import {
 } from "react-icons/md";
 
 export default function TodoList({ todos = [], setTodos }) {
+
+  const [show, setShow] = useState(false)
+  const [record, setRecord] = useState(null);
 
   const completedMissions = todos.filter(t =>
     t.completed === true
@@ -33,6 +36,23 @@ export default function TodoList({ todos = [], setTodos }) {
             }).catch(()=>{
               alert("failed to update");
             })
+  }
+
+  const handleDelete = (id) =>{
+    axios.delete(`api/todos/${id}`)
+    .then(()=>{
+    
+      const newTodos = todos.filter(item =>{
+    
+        return item.id !== id
+      })
+      
+      setTodos(newTodos)
+    }).catch(()=>{
+      
+      alert("failed deleted mission")
+    })
+    
   }
 
   const RenderListGroupItems = (item) => {
@@ -78,7 +98,11 @@ export default function TodoList({ todos = [], setTodos }) {
             cursor:"pointer",
             marginRight:"12px"
           }}/>
-          <MdDelete style={{
+          <MdDelete 
+            onClick={()=>{
+              handleDelete(item.id)
+            }}
+            style={{
             cursor:"pointer"
           }}/>
         </div>

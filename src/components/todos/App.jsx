@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { ListGroup} from "react-bootstrap";
 
 import {
   MdCheckBox,
@@ -12,7 +12,13 @@ import {
 
 export default function TodoList({ todos = [], setTodos }) {
 
+  const completedMissions = todos.filter(t =>
+    t.completed === true
+  )
 
+  const incompletedMissions = todos.filter(t =>
+    t.completed === false
+  )
   const handleUpdate = async (id,value)=>{
     return axios.patch(`/api/todos/${id}/`,value)
             .then((res)=>{
@@ -81,7 +87,19 @@ export default function TodoList({ todos = [], setTodos }) {
   };
   return (
     <div>
-      <ListGroup>{todos.map(RenderListGroupItems)}</ListGroup>
+      <div className="mb-2 mt-4">
+        Missions Assigned ({incompletedMissions.length})
+      </div>
+      <ListGroup>
+        {incompletedMissions.map(RenderListGroupItems)}
+      </ListGroup>
+
+      <div className="mb-2 mt-4">
+        Missions Completed ({completedMissions.length})
+      </div>
+      <ListGroup>
+        {completedMissions.map(RenderListGroupItems)}
+      </ListGroup>
     </div>
   );
 }

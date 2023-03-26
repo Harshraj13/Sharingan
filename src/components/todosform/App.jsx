@@ -1,3 +1,4 @@
+import  axios  from "axios";
 import React, {useState} from "react";
 import { Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
@@ -5,7 +6,7 @@ import { FormControl } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 
 
-function TodoForm(){
+function TodoForm({todos ,setTodos}){
 
     const [mission,setMission] = useState("")
 
@@ -13,8 +14,30 @@ function TodoForm(){
         setMission(event.target.value);
     }
 
+    const handleSubmit = event =>{
+        event.preventDefault()
+
+        if (!mission){
+            alert("Please check input provided for the Mission")
+            return;
+        }
+        axios.post("/api/todos/",{
+            
+            "name": mission
+        }).then((res)=>{
+            setMission("");
+            const {data} = res;
+            setTodos({
+                ...todos,
+                data
+            }).catch(()=>{
+                alert("failed adding mission")
+            })
+        })
+    }
+
     return(
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <InputGroup>
                 <FormControl
                 className="mb-4"

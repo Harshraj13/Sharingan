@@ -17,7 +17,7 @@ const App = () => {
       .then((res) => {
         setTask(res.data)
       }).catch(() => {
-        alert("Something went wrong");
+        alert("Failed loading data");
       })
   }, [])
 
@@ -33,7 +33,7 @@ const App = () => {
         <TodoForm todos={task} setTodos={setTask}/>
         <TodoList todos={task} setTodos={setTask}/>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>FULLSTACK-Dev HRJ13 <a href='https://devhrj.onrender.com/'>connect</a></Footer>
+      <Footer style={{ textAlign: 'center' }}>Dev HRJ13 <a href='https://devhrj.onrender.com/'>connect</a></Footer>
     </Layout>
   );
 };

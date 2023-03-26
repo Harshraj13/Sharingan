@@ -1,5 +1,5 @@
 import  axios  from "axios";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
@@ -14,28 +14,48 @@ function TodoForm({todos ,setTodos}){
         setMission(event.target.value);
     }
 
-    const handleSubmit = event =>{
-        event.preventDefault()
+    // const handleSubmit = event =>{
+    //     event.preventDefault()
 
-        if (!mission){
-            alert("Please check input provided for the Mission")
-            return;
-        }
-        axios.post("/api/todos/",{
+    //     if (!mission){
+    //         alert("Please check input provided for the Mission")
+    //         return;
+    //     }
+    //     axios.post("/api/todos/",{
             
-            "name": mission
-        }).then((res)=>{
-            setMission("");
-            const {data} = res;
-            setTodos({
-                ...todos,
-                data
-            }).catch(()=>{
-                alert("failed adding mission")
-            })
+    //         name: mission
+    //     }).then((res)=>{
+    //         setMission("");
+    //         const {data} = res;
+    //         setTodos({
+    //             ...todos,
+    //             data
+    //         }).catch(()=>{
+    //             alert("failed adding mission")
+    //         })
+    //     })
+    // }
+    const handleSubmit = event => {
+        event.preventDefault();
+      
+        if (!mission) {
+          alert("Please check input provided for the Mission");
+          return;
+        }
+        
+        axios.post("/api/todos/", {
+          name: mission
         })
-    }
-
+        .then((res) => {
+          setMission("");
+          const {data} = res;
+          setTodos(prevTodos => [...prevTodos, data]);
+        })
+        .catch(() => {
+          alert("failed adding mission");
+        });
+      }
+      
     return(
         <Form onSubmit={handleSubmit}>
             <InputGroup>

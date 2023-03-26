@@ -1,129 +1,126 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { ListGroup} from "react-bootstrap";
-
-import {
-  MdCheckBox,
-  MdCheckBoxOutlineBlank,
-  MdEdit,
-  MdDelete,
-  MdCopyAll,
-} from "react-icons/md";
+import ListGroup from "react-bootstrap/ListGroup"
+import FormControl from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { MdCheckBox, MdCheckBoxOutlineBlank, MdEdit, MdDelete, MdCopy, MdCopyAll } from "react-icons/md";
 
 export default function TodoList({ todos = [], setTodos }) {
+    const [show, setShow] = useState(false);
+    const [record, setRecord] = useState(null);
 
-  const [show, setShow] = useState(false)
-  const [record, setRecord] = useState(null);
+    const handleClose = () => {
+        setShow(false);
+    }
 
-  const completedMissions = todos.filter(t =>
-    t.completed === true
-  )
-
-  const incompletedMissions = todos.filter(t =>
-    t.completed === false
-  )
-  const handleUpdate = async (id,value)=>{
-    return axios.patch(`/api/todos/${id}/`,value)
-            .then((res)=>{
-              const {data}  = res;
-              const newTodos = todos.map(task=>{
-                if (task.id === id){
-                  return data;
-                }
-                return task;
-              })
-              setTodos(newTodos);
-            }).catch(()=>{
-              alert("failed to update");
+    const handleDelete = (id) => {
+        axios.delete(`/api/todos/${id}/`)
+            .then(() => {
+                const newTodos = todos.filter((t) => {
+                    return t.id !== id
+                });
+                setTodos(newTodos);
+            }).catch(() => {
+                alert("failed deleting");
             })
-  }
+    }
 
-  const handleDelete = (id) =>{
-    axios.delete(`api/todos/${id}`)
-    .then(()=>{
+    const handleUpdate = async (id, value) => {
+        return axios.patch(`/api/todos/${id}/`, value)
+            .then((res) => {
+                const { data } = res;
+                const newTodos = todos.map(t => {
+                    if (t.id === id) {
+                        return data;
+                    }
+                    return t;
+                })
+                setTodos(newTodos);
+            }).catch(() => {
+                alert("Failed updating...");
+            })
+    }
+
+    const renderListGroupItem = (t) => {
+        return <ListGroup.Item key={t.id} className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-center">
+                <span style={{
+                    marginRight: "12px", cursor: "pointer"
+                }} onClick={() => {
+                    handleUpdate(t.id, {
+                        completed: !t.completed
+                    })
+                }}>
+                    {t.completed === true ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+                </span>
+                <span>
+                    {t.name}
+                </span>
+            </div>
+            <div>
+                <MdEdit style={{
+                    cursor: "pointer",
+                    marginRight: "12px"
+                }} onClick={() => {
+                    setRecord(t);
+                    setShow(true);
+                }} />
+                <MdDelete style={{
+                    cursor: "pointer"
+                }} onClick={() => {
+                    handleDelete(t.id);
+                }} />                
+            </div>
+        </ListGroup.Item>
+    }
+
+    const handleChange = (e) => {
+        setRecord({
+            ...record,
+            name: e.target.value
+        })
+    }
+
+    const handleSaveChanges = async () => {
+        await handleUpdate(record.id, { name: record.name });
+        handleClose();
+    }
+
+    const completedTodos = todos ? todos.filter(t => t.completed === true) : [];
+    const incompleteTodos = todos ? todos.filter(t => t.completed === false) : [];
     
-      const newTodos = todos.filter(item =>{
-    
-        return item.id !== id
-      })
-      
-      setTodos(newTodos)
-    }).catch(()=>{
-      
-      alert("failed deleted mission")
-    })
-    
-  }
 
-  const RenderListGroupItems = (item) => {
-    return (
-      <ListGroup.Item
-        key={item.id}
-        className="d-flex justify-content-between
-                          align-items-center"
-      >
-        <div className="d-flex justify-content-center">
-          <span
-            style={{
-              marginRight: "12px",
-              cursor: "pointer",
-            }}
-
-            onClick={()=>{
-
-              handleUpdate(item.id,{
-                
-                completed:!item.completed
-
-              })
-            }}
-          >
-            {item.completed === true ? (
-              <MdCheckBox />
-            ) : (
-              <MdCheckBoxOutlineBlank />
-            )}
-          </span>
-          <span>
-            <MdCopyAll style={{cursor:"pointer",
-                    marginRight:"12px"
-                }}/>
-          </span>
+    return <div>
+        <div className="mb-2 mt-4">
+            Incomplete Todos ({incompleteTodos.length})
         </div>
-        <div>
-          <span>{item.name}</span>
+        <ListGroup>
+            {incompleteTodos.map(renderListGroupItem)}
+        </ListGroup>
+        <div className="mb-2 mt-4">
+            Completed Todos ({completedTodos.length})
         </div>
-        <div>
-          <MdEdit style={{
-            cursor:"pointer",
-            marginRight:"12px"
-          }}/>
-          <MdDelete 
-            onClick={()=>{
-              handleDelete(item.id)
-            }}
-            style={{
-            cursor:"pointer"
-          }}/>
-        </div>
-      </ListGroup.Item>
-    );
-  };
-  return (
-    <div>
-      <div className="mb-2 mt-4">
-        Missions Assigned ({incompletedMissions.length})
-      </div>
-      <ListGroup>
-        {incompletedMissions.map(RenderListGroupItems)}
-      </ListGroup>
-
-      <div className="mb-2 mt-4">
-        Missions Completed ({completedMissions.length})
-      </div>
-      <ListGroup>
-        {completedMissions.map(RenderListGroupItems)}
-      </ListGroup>
+        <ListGroup>
+            {completedTodos.map(renderListGroupItem)}
+        </ListGroup>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Edit Todo</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <FormControl value={record ? record.name : ""}
+                    onChange={handleChange}
+                />
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleSaveChanges}>
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </Modal>
     </div>
-  );
 }

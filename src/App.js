@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from './components/navbar/Navbar';
+import TodoList from './components/todos/App';
+import TodoForm from './components/todosform/App';
+import React ,{useState,useEffect} from 'react';
+import { Layout } from 'antd';
+import axios from 'axios';
+import './App.css'
 
-function App() {
+const { Content, Footer } = Layout;
+
+const App = () => {
+
+  const [task,setTask] = useState([]);
+
+  useState(()=>{
+    axios.get("/api/todos/")
+    .then(res=>{
+      setTask(res.data)
+    }).catch(()=>{
+      alert("Error fetching data")
+    })
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className="layout">
+      <Navbar />
+      <Content style={{ padding: '0 50px' }}>
+        <div className="site-layout-content">
+          <center><h1 style={{
+            backgroundColor:"whitesmoke",opacity:0.7
+          }}>Todos App</h1></center>
+        </div>
+        <TodoForm/>
+        <TodoList todos={task} setTodos={setTask}/>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>FULLSTACK-Dev HRJ13 <a href='https://devhrj.onrender.com/'>connect</a></Footer>
+    </Layout>
   );
-}
+};
 
 export default App;

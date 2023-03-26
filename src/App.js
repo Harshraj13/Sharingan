@@ -12,14 +12,14 @@ const App = () => {
 
   const [task,setTask] = useState([]);
 
-  useState(()=>{
+  useEffect(() => {
     axios.get("/api/todos/")
-    .then(res=>{
-      setTask(res.data)
-    }).catch(()=>{
-      alert("Error fetching data")
-    })
-  })
+      .then((res) => {
+        setTask(res.data)
+      }).catch(() => {
+        alert("Something went wrong");
+      })
+  }, [])
 
   return (
     <Layout className="layout">
@@ -30,7 +30,7 @@ const App = () => {
             backgroundColor:"whitesmoke",opacity:0.7
           }}>Todos App</h1></center>
         </div>
-        <TodoForm/>
+        <TodoForm todos={task} setTodos={setTask}/>
         <TodoList todos={task} setTodos={setTask}/>
       </Content>
       <Footer style={{ textAlign: 'center' }}>FULLSTACK-Dev HRJ13 <a href='https://devhrj.onrender.com/'>connect</a></Footer>

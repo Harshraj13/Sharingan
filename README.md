@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+Sharingan Todo List App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sharingan is a Todo List application based on the popular anime and manga series Naruto. This app is inspired by the character Kakashi Hatake who has the ability to use the Sharingan eye technique. With this app, you can create your own tasks and manage them easily.
+Features
 
-## Available Scripts
+    Create tasks with name and description
+    Edit tasks
+    Delete tasks
+    Mark tasks as completed
+    Filter tasks by completed status
+    Search tasks by name or description
+    User authentication and registration
 
-In the project directory, you can run:
+Technologies Used
 
-### `npm start`
+    Django (Python web framework)
+    SQLite (Relational Database Management System)
+    HTML, CSS and JavaScript
+    Bootstrap (Front-end framework)
+    Heroku (Cloud platform for deployment)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    Clone the repository to your local machine.
 
-### `npm test`
+bash
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+git clone https://github.com/your-username/Sharingan-Todo-List-App.git
 
-### `npm run build`
+    Create a virtual environment using virtualenv or venv and activate it.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+bash
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+virtualenv env
+source env/bin/activate
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Install the requirements.
 
-### `npm run eject`
+bash
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+pip install -r requirements.txt
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    Create the database tables.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+bash
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+python manage.py migrate
 
-## Learn More
+    Start the development server.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+bash
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+python manage.py runserver
 
-### Code Splitting
+    Open your browser and go to http://localhost:8000/ to view the app.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Usage
 
-### Analyzing the Bundle Size
+    Register a new account or login with an existing account.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    Create a new task by clicking the "Add Task" button.
 
-### Making a Progressive Web App
+    Edit a task by clicking the "Edit" button.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    Mark a task as completed by clicking the checkbox.
 
-### Advanced Configuration
+    Delete a task by clicking the "Delete" button.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    Filter tasks by completed status using the dropdown menu.
 
-### Deployment
+    Search tasks by name or description using the search bar.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Deployment
 
-### `npm run build` fails to minify
+Deploying the app soon!!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Conclusion
+
+Sharingan is a simple yet effective Todo List application inspired by the popular anime and manga series Naruto. It allows you to manage your tasks easily and efficiently. The app is built using Django and SQLite, with Bootstrap for the front-end. It will be deployed on Heroku for easy access. Feel free to contribute to the project and add more features.
